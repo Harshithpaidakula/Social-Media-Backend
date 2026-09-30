@@ -24,7 +24,7 @@ def create_posts(post: schemas.Postcreate, db: Session = Depends(get_db),current
     # cursor.execute(
     #     "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
     #     (post.title, post.content, post.published),
-    # )
+    # ))))
     print(current_user.email)
     db_post = models.Post(**post.model_dump())
     db.add(db_post)
