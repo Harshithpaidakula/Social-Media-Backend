@@ -23,9 +23,16 @@ if ($diffExitCode -eq 1) {
 } elseif ($diffExitCode -ne 0) {
     throw "Could not inspect staged project changes."
 } else {
-    git commit --allow-empty -m $message
+    $today = Get-Date -Format "yyyy-MM-dd"
+    $lastUpdate = git log -1 --format="%ad|%s" --date=format:%Y-%m-%d
     if ($LASTEXITCODE -ne 0) {
-        throw "Could not create the daily contribution commit."
+        throw "Could not inspect the latest commit."
+    }
+    if ($lastUpdate -ne "$today|$message") {
+        git commit --allow-empty -m $message
+        if ($LASTEXITCODE -ne 0) {
+            throw "Could not create the daily contribution commit."
+        }
     }
 }
 
