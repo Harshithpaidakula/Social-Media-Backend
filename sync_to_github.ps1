@@ -14,14 +14,19 @@ if ($LASTEXITCODE -ne 0) {
 
 git diff --cached --quiet
 $diffExitCode = $LASTEXITCODE
+$message = "Development update"
 if ($diffExitCode -eq 1) {
-    $message = "Auto-sync {0}" -f (Get-Date -Format "yyyy-MM-dd HH:mm")
     git commit -m $message
     if ($LASTEXITCODE -ne 0) {
         throw "Could not create the automatic sync commit."
     }
 } elseif ($diffExitCode -ne 0) {
     throw "Could not inspect staged project changes."
+} else {
+    git commit --allow-empty -m $message
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not create the daily contribution commit."
+    }
 }
 
 git push --set-upstream origin $branch
