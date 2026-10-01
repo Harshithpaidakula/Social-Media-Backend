@@ -1,9 +1,7 @@
 from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
-
-from .. import models, schemas , oauth2
+from .. import models, schemas , oauth2 #imports
 from ..database import get_db
 
 router = APIRouter(
@@ -79,4 +77,5 @@ def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(
     post_query.update(updated_post.model_dump(), synchronize_session=False)
     db.commit()
     return post_query.first()
+
 
