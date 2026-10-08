@@ -1,15 +1,12 @@
 # pyright: reportMissingModuleSource=false
-import os
 from datetime import datetime, timedelta, timezone
 
-from dotenv import load_dotenv
 from jose import JWTError, jwt
-from . import schemas, database ,models
+from . import schemas, database, models
+from .config import settings
 from fastapi import Depends,status, HTTPException 
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-
-load_dotenv()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 __all__ = ["JWTError", "jwt"]
@@ -18,9 +15,9 @@ __all__ = ["JWTError", "jwt"]
 # ALGORITHM
 # ACCESS TIME
 
-SECRET_KEY = os.getenv("SECRET_KEY", "development-only-change-me")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 def create_access_token(data: dict):
     to_encode = data.copy()
