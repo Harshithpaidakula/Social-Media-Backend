@@ -80,7 +80,7 @@ def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(
             detail=f"The post with ID {id} was not found",
         )
 
-    if post.owner_id != oauth2.get_current_user.id:
+    if post.owner_id != current_user.id:
             raise HTTPException(
                 status_code= status.HTTP_403_FORBIDDEN,detail = "Not authorized to perform requested action"
             )
