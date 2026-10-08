@@ -3,10 +3,18 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    path : int
-    database_password : str = "localhost"
-    database_username : str = "postgress"
-    secret_key : str = "234ui34535435435"
+    DATABASE_HOSTNAME :str
+    DATABASE_PORT : str
+    DATABASE_PASSWORD : str
+    DATABASE_NAME : str
+    DATABASE_USERNAME : str
+    SECRET_KEY : str
+    ALGORITH : str
+    ACCESS_TOKEN_EXPIRE_MINUTES : int
+
+    
+    class Config:
+        env_file = ".env.example"
 
 
 settings = Settings()
