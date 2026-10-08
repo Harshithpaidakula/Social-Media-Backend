@@ -1,20 +1,20 @@
-from pydantic import BaseSettings
-
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DATABASE_HOSTNAME :str
-    DATABASE_PORT : str
-    DATABASE_PASSWORD : str
-    DATABASE_NAME : str
-    DATABASE_USERNAME : str
-    SECRET_KEY : str
-    ALGORITH : str
-    ACCESS_TOKEN_EXPIRE_MINUTES : int
+    DATABASE_HOSTNAME: str = "localhost"
+    DATABASE_PORT: int = 5432
+    DATABASE_PASSWORD: str = "password"
+    DATABASE_NAME: str = "fastapi"
+    DATABASE_USERNAME: str = "postgres"
+    SECRET_KEY: str = "development-only-change-me"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
-    
-    class Config:
-        env_file = ".env.example"
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+    )
 
 
 settings = Settings()
