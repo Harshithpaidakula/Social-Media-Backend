@@ -10,19 +10,12 @@ router = APIRouter(
 )
 
 @router.get("/",response_model=List[schemas.Post])
-def get_posts(
-    db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
-    limit: int = 10,
-    skip: int = 0,
-    search: Optional[str] = None,
-):
+def get_posts(db:Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user),
+    Limit: int = 10, skip : int = 0,search : Optional[str] = ""):
     # cursor.execute("SELECT * FROM posts")
     # posts = cursor.fetchall()
-    query = db.query(models.Post)
-    if search:
-        query = query.filter(models.Post.title.ilike(f"%{search}%"))
-    posts = query.limit(limit).offset(skip).all()
+    print(Limit)
+    posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(Limit).offset(skip).all()
     return posts
 
 
@@ -74,15 +67,14 @@ def delete_post(id: int, db: Session = Depends(get_db),current_user: int = Depen
 
 
 @router.put("/{id}",response_model=schemas.Post)
-def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)):
-    limit: int = 10):
+def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user),
+):
 
     # cursor.execute(
     #     """UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""",
     #     (post.title, post.content, post.published, str(id)),
     # )
     # updated_post = cursor.fetchone()
-    print(limit)
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
     if post is None:
