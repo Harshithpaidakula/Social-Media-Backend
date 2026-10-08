@@ -15,7 +15,7 @@ def get_posts(db:Session = Depends(get_db),current_user: int = Depends(oauth2.ge
     # cursor.execute("SELECT * FROM posts")
     # posts = cursor.fetchall()
     print(Limit)
-    posts = db.query(models.Post).all()
+    posts = db.query(models.Post).limit(Limit).all()
     return posts
 
 
