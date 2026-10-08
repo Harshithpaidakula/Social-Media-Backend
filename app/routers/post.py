@@ -48,7 +48,7 @@ def get_post_by_id(id: int , db:Session = Depends(get_db),current_user: int = De
 def delete_post(id: int, db: Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
-    if post.first() is None:
+    if post is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"The post with ID {id} was not found",
