@@ -88,5 +88,3 @@ def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(
     post_query.update(updated_post.model_dump(), synchronize_session=False)
     db.commit()
     return post_query.first()
-
-
