@@ -65,13 +65,15 @@ def delete_post(id: int, db: Session = Depends(get_db),current_user: int = Depen
 
 
 @router.put("/{id}",response_model=schemas.Post)
-def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)):
+def update_post(id: int, updated_post: schemas.Postcreate, db:Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user),
+    Limit: int = 10):
 
     # cursor.execute(
     #     """UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""",
     #     (post.title, post.content, post.published, str(id)),
     # )
     # updated_post = cursor.fetchone()
+    print(Limit)
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
     if post is None:
