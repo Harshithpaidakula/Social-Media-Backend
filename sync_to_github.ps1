@@ -14,7 +14,7 @@ if ($LASTEXITCODE -ne 0) {
 
 git diff --cached --quiet
 $diffExitCode = $LASTEXITCODE
-$message = "Development update"
+$message = "Development Update"
 if ($diffExitCode -eq 1) {
     git commit -m $message
     if ($LASTEXITCODE -ne 0) {
