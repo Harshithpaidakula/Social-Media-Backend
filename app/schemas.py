@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, EmailStr 
-from pydantic.types import conint
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import Optional
 # schemas.py is used to define how incoming and outgoing data should look.
 # In FastAPI, we use Pydantic models to validate request bodies and to shape responses.
@@ -69,4 +68,4 @@ class TokenData(BaseModel):
 
 class Vote(BaseModel):
     post_id : int
-    dir : conint(Le = 1)
+    dir : int = Field(..., le=1)
