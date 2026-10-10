@@ -24,7 +24,7 @@ app.include_router(auth.router)
 app.include_router(vote.router)
 
 
-
+ 
 @app.get("/")
 def root():
     return {"message": "Welcome to the FastAPI CRUD Practice Session"}
