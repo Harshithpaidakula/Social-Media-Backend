@@ -23,6 +23,8 @@ def get_posts(
     if search:
         query = query.filter(models.Post.title.ilike(f"%{search}%"))
     posts = query.limit(limit).offset(skip).all()
+
+    print(query)
     return posts
 
 
