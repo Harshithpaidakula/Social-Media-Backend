@@ -19,7 +19,8 @@ def get_posts(
 ):
     # cursor.execute("SELECT * FROM posts")
     # posts = cursor.fetchall()
-    query = db.query(models.Post)
+    query = db.query(models.Post).join(
+        models.Post.title.contains(search)).limit(limit).offset(skip).all()
     if search:
         query = query.filter(models.Post.title.ilike(f"%{search}%"))
     posts = query.limit(limit).offset(skip).all()
