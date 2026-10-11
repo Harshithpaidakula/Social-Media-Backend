@@ -23,13 +23,14 @@ def get_posts(
     if search:
         query = query.filter(models.Post.title.contains(search))
 
-    results = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
-        models.Vote, models.Vote.post_id == models.Post.id, isouter=True
-    ).group_by(models.Post.id)
-    print(results)
-
     posts = query.limit(limit).offset(skip).all()
-    return results
+
+    for post in posts:
+        post.votes = db.query(func.count(models.Vote.post_id)).filter(
+            models.Vote.post_id == post.id
+        ).scalar() or 0
+
+    return posts
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_posts(post: schemas.Postcreate, db: Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)):
