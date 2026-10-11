@@ -40,6 +40,7 @@ class Post(PostBase):
     content_at: datetime
     owner_id : int
     owner: UserOut
+    votes_count: int = 0
     # from_attributes=True tells Pydantic to read values from an SQLAlchemy model object.
     # Without this, FastAPI may not be able to convert a database row (like models.Post)
     # into a JSON response automatically.
