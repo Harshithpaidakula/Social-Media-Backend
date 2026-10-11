@@ -23,18 +23,7 @@ def get_posts(
     if search:
         query = query.filter(models.Post.title.contains(search))
 
-    results = (
-        query.outerjoin(models.Vote, models.Vote.post_id == models.Post.id)
-        .group_by(models.Post.id)
-        .order_by(models.Post.id)
-        .with_entities(
-            models.Post,
-            func.count(models.Vote.post_id).label("votes_count"),
-        )
-        .limit(limit)
-        .offset(skip)
-        .all()
-    )
+    results = query.join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
     print(results)
 
     posts = query.limit(limit).offset(skip).all()
