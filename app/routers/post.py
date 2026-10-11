@@ -46,7 +46,7 @@ def create_posts(post: schemas.Postcreate, db: Session = Depends(get_db),current
     return db_post
 
 
-@router.get("/{id}",response_model=schemas.Post)
+@router.get("/{id}", response_model=schemas.PostOut)
 def get_post_by_id(id: int , db:Session = Depends(get_db),current_user: int = Depends(oauth2.get_current_user)):
     # cursor.execute("SELECT * FROM POSTS WHERE id = %s", (str(id),))
     # post = cursor.fetchone()
@@ -56,6 +56,10 @@ def get_post_by_id(id: int , db:Session = Depends(get_db),current_user: int = De
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"The post with ID {id} was not found",
         )
+
+    post.votes = db.query(func.count(models.Vote.post_id)).filter(
+        models.Vote.post_id == post.id
+    ).scalar() or 0
     return post
 
 
