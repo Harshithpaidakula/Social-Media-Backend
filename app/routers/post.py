@@ -1,19 +1,13 @@
 from typing import List,Optional
 from fastapi import APIRouter, Depends, HTTPException, Response, status
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 from .. import models, schemas , oauth2 #imports
 from ..database import get_db
-
+from sqlalchemy import func
 router = APIRouter(
     prefix="/posts",
     tags=['Posts'],
 )
-
-
-def count_post_votes(db: Session, post_id: int) -> int:
-    return db.query(func.count(models.Vote.post_id)).filter(models.Vote.post_id == post_id).scalar() or 0
-
 
 @router.get("/", response_model=List[schemas.Post])
 def get_posts(
@@ -29,11 +23,10 @@ def get_posts(
     if search:
         query = query.filter(models.Post.title.contains(search))
 
+    results = query.join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
+    print(results)
+
     posts = query.limit(limit).offset(skip).all()
-
-    for post in posts:
-        post.votes_count = count_post_votes(db, post.id)
-
     return posts
 
 
