@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 from .. import models, schemas , oauth2 #imports
 from ..database import get_db
-
+from sqlalchemy import func
 router = APIRouter(
     prefix="/posts",
     tags=['Posts'],
