@@ -19,13 +19,14 @@ def get_posts(
 ):
     # cursor.execute("SELECT * FROM posts")
     # posts = cursor.fetchall()
-    query = db.query(models.Post).join(
-        models.Post.title.contains(search)).limit(limit).offset(skip).all()
+    query = db.query(models.Post)
     if search:
-        query = query.filter(models.Post.title.ilike(f"%{search}%"))
-    posts = query.limit(limit).offset(skip).all()
+        query = query.filter(models.Post.title.contains(search))
 
-    print(query)
+    results = query.join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
+    print(results)
+
+    posts = query.limit(limit).offset(skip).all()
     return posts
 
 
