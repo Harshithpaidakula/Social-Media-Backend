@@ -45,6 +45,10 @@ class Post(PostBase):
     # into a JSON response automatically.
     model_config = ConfigDict(from_attributes=True)
 
+class PostOut(PostBase):
+    Post:Post
+    votes: int
+
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
