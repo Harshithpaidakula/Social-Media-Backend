@@ -19,11 +19,14 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.add_column(
-        "posts",
-        sa.Column("contents", sa.String(), nullable=True),
-    )
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    if "contents" not in {column["name"] for column in inspector.get_columns("posts")}:
+        op.add_column("posts", sa.Column("contents", sa.String(), nullable=True))
 
 
 def downgrade() -> None:
-    op.drop_column("posts", "contents")
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    if "contents" in {column["name"] for column in inspector.get_columns("posts")}:
+        op.drop_column("posts", "contents")
