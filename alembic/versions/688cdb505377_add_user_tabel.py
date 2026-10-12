@@ -20,26 +20,22 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
-    bind = op.get_bind()
-    if not bind.dialect.has_table(bind, "users"):
-        op.create_table(
-            "users",
-            sa.Column("id", sa.Integer(), nullable=False),
-            sa.Column("email", sa.String(), nullable=False),
-            sa.Column("password", sa.String(), nullable=False),
-            sa.Column(
-                "content_at",
-                sa.TIMESTAMP(timezone=True),
-                nullable=False,
-                server_default=sa.text("now()"),
-            ),
-            sa.PrimaryKeyConstraint("id"),
-            sa.UniqueConstraint("email"),
-        )
+    op.create_table(
+        "users",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("email", sa.String(), nullable=False),
+        sa.Column("password", sa.String(), nullable=False),
+        sa.Column(
+            "content_at",
+            sa.TIMESTAMP(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
+        sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("email"),
+    )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    bind = op.get_bind()
-    if bind.dialect.has_table(bind, "users"):
-        op.drop_table("users")
+    op.drop_table("users")
