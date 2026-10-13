@@ -18,6 +18,13 @@ from .config import settings
 
 # models.Base.metadata.create_all(bind=engine, checkfirst=True)
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://www.google.com"],           # Allow requests from these specific origins
+    allow_credentials=True,          # Allow cookies / authentication headers
+    allow_methods=["*"],             # Allow all standard HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],             # Allow all custom or standard HTTP headers
+)
 
 
 app.include_router(post.router)
