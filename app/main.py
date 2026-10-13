@@ -20,7 +20,11 @@ from .config import settings
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://www.google.com"],           # Allow requests from these specific origins
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://www.google.com",
+    ],           # Allow requests from these specific origins
     allow_credentials=True,          # Allow cookies / authentication headers
     allow_methods=["*"],             # Allow all standard HTTP methods (GET, POST, etc.)
     allow_headers=["*"],             # Allow all custom or standard HTTP headers
