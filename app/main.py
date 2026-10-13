@@ -8,13 +8,15 @@ using an in-memory list while establishing a PostgreSQL connection.
 
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from . import models
 from .database import engine
 from .routers import auth, post, user ,vote
 from .config import settings
 
 
-models.Base.metadata.create_all(bind=engine, checkfirst=True)
+# models.Base.metadata.create_all(bind=engine, checkfirst=True)
 app = FastAPI()
 
 
